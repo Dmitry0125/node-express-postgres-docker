@@ -1,0 +1,27 @@
+services:
+  # 1. Сервис базы данных
+  postgres_db:
+    image: postgres:15-alpine
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: node_api
+    ports:
+      - "5433:5432"
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+      # Магия: монтируем всю папку с SQL файлами. Docker выполнит их по очереди: 01-..., потом 02-...
+      - ./db-init:/docker-entrypoint-initdb.d:ro
+
+  # 2. Сервис вашего Node.js приложения
+  node_app:
+    build: .
+    volumes:
+      - .:/app
+      - /app/node_modules
+    ports:
+      - "3000:3000"
+    command: npm run dev
+    depends_on:
+      - postgres_db

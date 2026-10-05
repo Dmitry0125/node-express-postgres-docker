@@ -1,0 +1,13 @@
+# --- База данных (Docker Volumes) ---
+pgdata/
+
+# --- Логи и временные файлы ---
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.eslintcache
+.cache/
+
+# --- Системные файлы операционных систем ---
+.DS_Store
+Thumbs.db
